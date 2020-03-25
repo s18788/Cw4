@@ -1,7 +1,6 @@
 ﻿using Cw4.DAL;
 using Cw4.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Data.SqlClient;
 
 namespace Cw4.Controllers
@@ -27,7 +26,7 @@ namespace Cw4.Controllers
             {
 
                 com.Connection = client;
-                com.CommandText = "select * from Students;";
+                com.CommandText = "select * from Students";
 
                 client.Open();
                 var dr = com.ExecuteReader();
@@ -38,21 +37,23 @@ namespace Cw4.Controllers
                     st.FirstName = dr["FirstName"].ToString();
                     st.LastName = dr["LastName"].ToString();
 
+                    return Ok(st);
                 }
 
 
             }
-            return Ok("pobranie zakonczone");
+            return NotFound();
         }
-         [HttpGet("{id}")]
-        public IActionResult GetStudent_02(string id)
+        [HttpGet("{id}")]
+        public IActionResult GetStudent_02(string indexNumber)
         {
             using (var client = new SqlConnection(conString))
             using (var com = new SqlCommand())
             {
 
                 com.Connection = client;
-                com.CommandText = "select * from Students where indexNumber=@id;";
+                com.CommandText = "select * from Students where indexNumber=@id";
+                com.Parameters.AddWithValue("id", indexNumber);
 
                 client.Open();
                 var dr = com.ExecuteReader();
@@ -63,11 +64,12 @@ namespace Cw4.Controllers
                     st.FirstName = dr["FirstName"].ToString();
                     st.LastName = dr["LastName"].ToString();
 
+                    return Ok(st);
                 }
 
 
             }
-            return Ok("pobranie zakonczone");
+            return NotFound();
         }
 
 
